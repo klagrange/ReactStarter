@@ -1,21 +1,13 @@
 import { connect } from 'react-redux'
 import Pure from './Pure'
-
-import { a, increment } from '../../models/auth'
+import { getUsers } from 'models/home'
 
 const s = state => ({
-  name: "Keith",
+  users: state.home.users || []
 })
 
 const d = dispatch => ({
-  a: () => {
-    console.log('dispatching a')
-    dispatch(a())
-    // dispatch({ type: '[4] a' })
-  },
-  increment: () => {
-    dispatch(increment())
-  }
+  getUsers: () => dispatch(getUsers())
 })
 
 export default connect(s, d)(Pure)

@@ -4,12 +4,11 @@ import promiseMiddleware from 'redux-promise'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga'
 import { createBrowserHistory as createHistory } from 'history'
-
+import { all } from 'redux-saga/effects'
 import { reducer as formReducer } from 'redux-form'
-
 import { 
-    authReducer,
-    authSagaWatcher
+    homeReducer,
+    homeSagaWatcher
 } from './models'
 
 /**
@@ -18,13 +17,8 @@ import {
 const rootReducer = combineReducers({
     router: routerReducer,
     form: formReducer,
-    auth: authReducer
+    home: homeReducer
 })
-
-/**
- * SAGAS
- */
-const sagaMiddleware = createSagaMiddleware()
 
 /**
  * HISTORY
@@ -35,6 +29,7 @@ const reduxRouterMiddleware = routerMiddleware(history)
 /**
  * MIDDLEWARES
  */
+const sagaMiddleware = createSagaMiddleware()
 const rootMiddleware = composeWithDevTools(applyMiddleware(
     sagaMiddleware,
     promiseMiddleware,
@@ -42,9 +37,9 @@ const rootMiddleware = composeWithDevTools(applyMiddleware(
 ))
 
 function * rootSaga () {
-    yield [
-      ...authSagaWatcher,
-    ]
+    yield all([
+        ...homeSagaWatcher,
+    ])     
 }
 
 /**
@@ -53,14 +48,5 @@ function * rootSaga () {
 const appDefaultState = {}
 const store = createStore(rootReducer, appDefaultState, rootMiddleware)
 sagaMiddleware.run(rootSaga)
-
-// store.dispatch({ type: '[2] increment the state' })
-// store.dispatch({ type: '[2] increment the state' })
-// store.dispatch({ type: '[2] increment the state' })
-// store.dispatch({ type: '[2] increment the state' })
-// store.dispatch({ type: '[4] a' })
-
-// const products = () => console.log()
-// store.dispatch({ type: 'PRODUCTS_RECEIVED' })
 
 export default store

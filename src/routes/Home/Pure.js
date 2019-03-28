@@ -1,16 +1,26 @@
 import React, { Component } from 'react'
-import { increment } from '../../models';
 
 class Home extends Component {
-   
-    render() {
-        const { name, increment, a } = this.props
+    
+    componentWillMount() {
+        this.props.getUsers()
+    }
 
-        a()
-        increment()
+    renderUser(user) {
+        return (
+            <div> {user.name} ({user.username})</div>
+        )
+    }
+
+    render() {
+        const { users } = this.props
 
         return (
-            <div> Hello {name}! </div>
+            <div>
+                <div>
+                    { users.map(user => this.renderUser(user)) }
+                </div>
+            </div> 
         )
     }
 }
