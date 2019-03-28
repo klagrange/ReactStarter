@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Spinner from 'components/Spinner'
 
 class Home extends Component {
     
@@ -6,21 +7,26 @@ class Home extends Component {
         this.props.getUsers()
     }
 
-    renderUser(user) {
+    renderUsers(users) {
         return (
-            <div> {user.name} ({user.username})</div>
+            <div>
+                { 
+                    users.map(user => <div key={user.id}> {user.name} ({user.username})</div>)
+                }
+            </div>           
         )
     }
 
     render() {
         const { users } = this.props
-
         return (
             <div>
-                <div>
-                    { users.map(user => this.renderUser(user)) }
-                </div>
-            </div> 
+                {
+                    users.length === 0
+                        ? <Spinner />
+                        : this.renderUsers(users)
+                }
+            </div>
         )
     }
 }

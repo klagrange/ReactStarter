@@ -1,5 +1,5 @@
 import { createAction, createReducer } from 'redux-act';
-import { put, call } from 'redux-saga/effects'
+import { put, call, delay } from 'redux-saga/effects'
 import { createSagaWatcher } from 'buddha'
 import * as svc from 'services/home'
 
@@ -15,6 +15,8 @@ export const getUsersNOK = createAction('getUsersNOK');
  */
 export const sagas = {
   [getUsers]: function * () {
+    yield delay(2000)
+
     const { data, status } = yield call(svc.getUsers)
 
     status === 200
